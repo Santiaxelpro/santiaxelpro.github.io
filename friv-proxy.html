@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Friv Reborn – Proxy</title>
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Friv Classic Reborn - Proxy</title>
+
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+<style>
+html, body, iframe {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+</style>
+
 </head>
 <body>
 
-<iframe src="/proxy/"></iframe>
-
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js");
-    }
-</script>
+<iframe id="proxy-frame" src="proxy-loader.html" frameborder="0"></iframe>
 
 </body>
 </html>
