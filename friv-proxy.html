@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Friv Classic Reborn - Proxy</title>
+<title>Friv Classic Reborn - Proxy Local</title>
 
-<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+<!-- Ruffle local -->
+<script src="/ruffle/ruffle.js"></script>
 
 <style>
 html, body, iframe {
@@ -19,7 +20,10 @@ html, body, iframe {
 </head>
 <body>
 
-<iframe id="proxy-frame" src="proxy-loader.html" frameborder="0"></iframe>
+<iframe id="proxy-frame"
+        src="./friv-local/classic.html"
+        frameborder="0">
+</iframe>
 
 </body>
 </html>
