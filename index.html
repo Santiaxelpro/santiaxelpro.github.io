@@ -6,58 +6,20 @@
   <title>GitHub Game Pages</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* iframe a pantalla completa */
-    #mask-frame {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: none; /* oculto por defecto */
-      z-index: 99999;
-    }
-  </style>
 </head>
-
 <body>
   <canvas id="bg-canvas"></canvas>
-
-  <div id="main-content" class="container">
+  <div class="container">
     <h1>GitHub Game Pages</h1>
-
     <a href="1.5.2-eagler.html">Minecraft 1.5.2 Eagler</a><br>
     <a href="1.8.8-js.html">Minecraft 1.8.8 JS</a><br>
     <a href="1.8.8-wasm.html">Minecraft 1.8.8 WASM</a><br>
     <a href="1.12.2-js.html">Minecraft 1.12.2 JS</a><br>
     <a href="1.12.2-wasm.html">Minecraft 1.12.2 WASM</a><br>
     <a href="./subway-surfers/index.html">Subway Surfers</a><br>
-
-    <!-- ESTE ES EL FRIV ENMASCARADO -->
-    <a href="?p=friv">Friv Classic Reborn</a>
-
+    <a href="friv-proxy.html">Friv Classic Reborn</a>
     <div class="autor">Creado por Santiax</div>
   </div>
-
-  <iframe id="mask-frame"></iframe>
-
   <script src="dots-bg.js"></script>
-
-  <script>
-    const params = new URLSearchParams(location.search);
-    const p = params.get("p");
-
-    // Si p = friv → activar máscara
-    if (p === "friv") {
-      document.getElementById("main-content").style.display = "none";
-      document.getElementById("bg-canvas").style.display = "none";
-
-      const frame = document.getElementById("mask-frame");
-      frame.src = "https://tsproxy.losnuevoslusax.workers.dev/FrivReborn/classic.html";
-      frame.style.display = "block";
-    }
-  </script>
-
 </body>
 </html>
