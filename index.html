@@ -1,101 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Santiaxelpro</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #000;
-    }
-
-    /* Fondo animado que ya tenías */
-    canvas#stars {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-
-    /* Máscara / iframe */
-    #mask {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        border: none;
-        z-index: 2;
-        display: none; /* No se muestra hasta activarlo */
-    }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Game Pages</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+  <canvas id="bg-canvas"></canvas>
 
-<canvas id="stars"></canvas>
-<iframe id="mask"></iframe>
+  <div id="content" class="container">
+    <h1>GitHub Game Pages</h1>
 
-<script>
-/* ===============================
-   SISTEMA DE MÁSCARA SUPER SIMPLE
-   =============================== */
+    <!-- ENLACES ORIGINALES PERO ENMASCARADOS -->
+    <a href="?p=1.5.2-eagler.html">Minecraft 1.5.2 Eagler</a><br>
+    <a href="?p=1.8.8-js.html">Minecraft 1.8.8 JS</a><br>
+    <a href="?p=1.8.8-wasm.html">Minecraft 1.8.8 WASM</a><br>
+    <a href="?p=1.12.2-js.html">Minecraft 1.12.2 JS</a><br>
+    <a href="?p=1.12.2-wasm.html">Minecraft 1.12.2 WASM</a><br>
+    <a href="?p=subway-surfers/index.html">Subway Surfers</a><br>
 
-const params = new URLSearchParams(window.location.search);
-const page = params.get("p");
+    <!-- AHORA APUNTA DIRECTO AL PROXY REAL (NO friv-proxy.html) -->
+    <a href="?p=friv">Friv Classic Reborn</a>
 
-if (page === "friv") {
-    const mask = document.getElementById("mask");
-    mask.src = "https://tsproxy.losnuevoslusax.workers.dev";
-    mask.style.display = "block"; // activar máscara
-}
+    <div class="autor">Creado por Santiax</div>
+  </div>
 
-/* ===============================
-   FONDO DE ESTRELLAS ANIMADO
-   =============================== */
+  <script src="dots-bg.js"></script>
 
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
+  <script>
+    const container = document.getElementById("content");
+    const params = new URLSearchParams(location.search);
+    const page = params.get("p");
 
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resize();
-window.onresize = resize;
-
-let stars = [];
-for (let i = 0; i < 200; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speed: Math.random() * 0.5 + 0.2
-    });
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#fff";
-
-    for (let s of stars) {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        s.y += s.speed;
-        if (s.y > canvas.height) s.y = 0;
+    // Si no hay parámetro, mostrar menú
+    if (!page) {
+      container.style.display = "block";
+    } else {
+      loadPage(page);
     }
 
-    requestAnimationFrame(animate);
-}
-animate();
-</script>
+    async function loadPage(p) {
+      // Si es FRIV, cargar directamente tu WORKER
+      if (p === "friv") {
+        container.innerHTML = `
+          <iframe 
+            src="https://tsproxy.losnuevoslusax.workers.dev"
+            style="width:100%; height:100vh; border:none;">
+          </iframe>
+        `;
+        return;
+      }
+
+      // Cargar archivos locales normales
+      try {
+        const res = await fetch(p);
+        const html = await res.text();
+
+        container.innerHTML = html;
+      } catch (e) {
+        container.innerHTML = `
+          <div style="color:white; padding:20px;">
+            <h2>Error cargando: ${p}</h2>
+            <p>${e}</p>
+            <a href="./" style="color:white;">Volver</a>
+          </div>
+        `;
+      }
+    }
+  </script>
 
 </body>
 </html>
