@@ -11,61 +11,43 @@
 <body>
   <canvas id="bg-canvas"></canvas>
 
-  <div id="app">
-    <div class="container">
-      <h1>GitHub Game Pages</h1>
+  <div class="container" id="menu">
+    <h1>GitHub Game Pages</h1>
 
-      <!-- ENLACES ENMASCARADOS -->
-      <a href="?p=1.5.2-eagler.html">Minecraft 1.5.2 Eagler</a><br>
-      <a href="?p=1.8.8-js.html">Minecraft 1.8.8 JS</a><br>
-      <a href="?p=1.8.8-wasm.html">Minecraft 1.8.8 WASM</a><br>
-      <a href="?p=1.12.2-js.html">Minecraft 1.12.2 JS</a><br>
-      <a href="?p=1.12.2-wasm.html">Minecraft 1.12.2 WASM</a><br>
-      <a href="?p=subway-surfers/index.html">Subway Surfers</a><br>
-      <a href="?p=friv-proxy.html">Friv Classic Reborn</a>
+    <!-- ENLACES ENMASCARADOS -->
+    <a href="1.5.2-eagler.html">Minecraft 1.5.2 Eagler</a><br>
+    <a href="1.8.8-js.html">Minecraft 1.8.8 JS</a><br>
+    <a href="1.8.8-wasm.html">Minecraft 1.8.8 WASM</a><br>
+    <a href="1.12.2-js.html">Minecraft 1.12.2 JS</a><br>
+    <a href="1.12.2-wasm.html">Minecraft 1.12.2 WASM</a><br>
+    <a href="subway-surfers/index.html">Subway Surfers</a><br>
 
-      <div class="autor">Creado por Santiax</div>
-    </div>
+    <!-- Máscara Friv -->
+    <a href="?p=friv">Friv Classic Reborn</a>
+
+    <div class="autor">Creado por Santiax</div>
   </div>
 
   <script src="dots-bg.js"></script>
 
   <script>
-    const APP = document.getElementById("app");
-
-    async function loadPage(path) {
-      try {
-        const res = await fetch(path);
-        let html = await res.text();
-
-        // Reescritura de rutas internas
-        html = html.replace(/href="\//g, 'href="./');
-        html = html.replace(/src="\//g, 'src="./');
-
-        // Convertir enlaces internos en navegación enmascarada
-        html = html.replace(/href="([^"]+)"/g, (m, p1) => {
-          if (p1.startsWith("http") || p1.startsWith("#")) return m;
-          return `href="?p=${p1}"`;
-        });
-
-        APP.innerHTML = html;
-      } catch (e) {
-        APP.innerHTML = `
-          <div style="color:white; padding:20px;">
-            <h2>Error cargando el archivo: ${path}</h2>
-            <p>${e}</p>
-            <a href="./">Volver</a>
-          </div>
-        `;
-      }
-    }
-
-    // Detecta ?p=
     const params = new URLSearchParams(location.search);
     const page = params.get("p");
 
-    if (page) {
-      loadPage(page);
+    if (page === "friv") {
+
+      // Ocultar el menú
+      document.getElementById("menu").style.display = "none";
+
+      // Crear un iframe que sirve como MÁSCARA
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://tsproxy.losnuevoslusax.workers.dev/";
+      iframe.style.width = "100%";
+      iframe.style.height = "100vh";
+      iframe.style.border = "none";
+      iframe.style.background = "black";
+
+      document.body.appendChild(iframe);
     }
   </script>
 
