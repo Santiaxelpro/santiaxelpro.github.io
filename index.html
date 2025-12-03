@@ -1,55 +1,101 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Game Pages</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="UTF-8">
+<title>Santiaxelpro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
-  <canvas id="bg-canvas"></canvas>
-
-  <div class="container" id="menu">
-    <h1>GitHub Game Pages</h1>
-
-    <!-- ENLACES ENMASCARADOS -->
-    <a href="1.5.2-eagler.html">Minecraft 1.5.2 Eagler</a><br>
-    <a href="1.8.8-js.html">Minecraft 1.8.8 JS</a><br>
-    <a href="1.8.8-wasm.html">Minecraft 1.8.8 WASM</a><br>
-    <a href="1.12.2-js.html">Minecraft 1.12.2 JS</a><br>
-    <a href="1.12.2-wasm.html">Minecraft 1.12.2 WASM</a><br>
-    <a href="subway-surfers/index.html">Subway Surfers</a><br>
-
-    <!-- Máscara Friv -->
-    <a href="?p=friv">Friv Classic Reborn</a>
-
-    <div class="autor">Creado por Santiax</div>
-  </div>
-
-  <script src="dots-bg.js"></script>
-
-  <script>
-    const params = new URLSearchParams(location.search);
-    const page = params.get("p");
-
-    if (page === "friv") {
-
-      // Ocultar el menú
-      document.getElementById("menu").style.display = "none";
-
-      // Crear un iframe que sirve como MÁSCARA
-      const iframe = document.createElement("iframe");
-      iframe.src = "https://tsproxy.losnuevoslusax.workers.dev/";
-      iframe.style.width = "100%";
-      iframe.style.height = "100vh";
-      iframe.style.border = "none";
-      iframe.style.background = "black";
-
-      document.body.appendChild(iframe);
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
     }
-  </script>
+
+    /* Fondo animado que ya tenías */
+    canvas#stars {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    /* Máscara / iframe */
+    #mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        z-index: 2;
+        display: none; /* No se muestra hasta activarlo */
+    }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<iframe id="mask"></iframe>
+
+<script>
+/* ===============================
+   SISTEMA DE MÁSCARA SUPER SIMPLE
+   =============================== */
+
+const params = new URLSearchParams(window.location.search);
+const page = params.get("p");
+
+if (page === "friv") {
+    const mask = document.getElementById("mask");
+    mask.src = "https://tsproxy.losnuevoslusax.workers.dev";
+    mask.style.display = "block"; // activar máscara
+}
+
+/* ===============================
+   FONDO DE ESTRELLAS ANIMADO
+   =============================== */
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.onresize = resize;
+
+let stars = [];
+for (let i = 0; i < 200; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        speed: Math.random() * 0.5 + 0.2
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+
+    for (let s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        s.y += s.speed;
+        if (s.y > canvas.height) s.y = 0;
+    }
+
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
 
 </body>
 </html>
